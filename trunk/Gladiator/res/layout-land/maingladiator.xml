@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/maingladiator"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/arenaback" >   
+	
+    <RelativeLayout 
+        android:id="@+id/left_col"
+        android:background="@drawable/parchment"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        >
+	<TextView
+        android:id="@+id/left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:textColor="#000"
+	    android:textSize="16px"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginTop="35dp"
+	    android:lineSpacingExtra="5dp"
+         />
+	<ImageView android:id="@+id/finger_up"
+	    android:src="@drawable/finger_up"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/left"
+        android:layout_marginTop="25dp"
+		android:layout_centerHorizontal="true"	/>
+	</RelativeLayout>
+	
+	<Button android:id="@+id/extras"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="EXTRAS"
+		android:drawableBottom="@drawable/extras"
+		android:layout_toRightOf="@id/left_col"
+		android:layout_alignParentTop="true"	
+	/>
+	<Button android:id="@+id/watch"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:drawableBottom="@drawable/watch"
+		android:text="WATCH"
+		android:layout_toRightOf="@id/left_col"
+		android:layout_alignParentBottom="true"			
+	/>
+	<RelativeLayout 
+        android:id="@+id/right_col"
+        android:background="@drawable/parchment"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@id/extras"
+        >
+	<TextView
+        android:id="@+id/right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+	    android:textSize="16px"
+	    android:padding="35dp"
+	    android:gravity="center"
+	    android:lineSpacingExtra="5dp"
+         />
+	<ImageView android:id="@+id/finger_down"
+	    android:src="@drawable/finger_down"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/right"
+        android:layout_marginTop="25dp"
+		android:layout_centerHorizontal="true"	/>
+	</RelativeLayout>
+	
+	
+</RelativeLayout>

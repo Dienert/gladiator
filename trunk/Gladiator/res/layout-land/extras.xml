@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/arenaback" >
+    
+    <LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+		<TabWidget android:id="@android:id/tabs"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		/>
+		<FrameLayout android:id="@android:id/tabcontent"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		>
+			<ScrollView
+			    android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+				
+				<RelativeLayout android:id="@+id/details"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:orientation="vertical"
+				    android:background="@drawable/parchment" 
+				    android:padding="25dp">
+				    <ImageView android:id="@+id/photo"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_margin="10dip"
+						android:src="@drawable/foto"
+					/>
+				    <TextView android:id="@+id/name"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:textStyle="bold"
+						android:singleLine="true"
+						android:layout_toRightOf="@id/photo"
+						android:layout_margin="10dip"
+						android:textColor="#000"
+					/>
+				    <TextView android:id="@+id/year"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:textStyle="bold"
+						android:singleLine="true"
+						android:layout_below="@id/name"		
+						android:layout_toRightOf="@id/photo"
+						android:textColor="#000"	
+						android:layout_margin="10dip"		
+					/>
+				    <TextView android:id="@+id/director"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:textStyle="bold"
+						android:singleLine="true"
+						android:textColor="#000"
+						android:layout_below="@id/year"
+						android:layout_toRightOf="@id/photo"
+						android:layout_margin="10dip"
+					/>
+				    <TextView android:id="@+id/synopsis"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:textStyle="bold"
+						android:textColor="#000"
+						android:layout_below="@id/photo"
+						android:layout_margin="10dip"
+						android:lineSpacingExtra="1dp"
+					/>
+				    <TextView android:id="@+id/cast"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical"
+						android:textStyle="bold"
+						android:textColor="#000"
+						android:layout_below="@id/synopsis"
+						android:layout_margin="10dip"
+						
+					/> 
+				    
+				</RelativeLayout>
+				
+			</ScrollView>
+			
+			<RelativeLayout android:layout_width="fill_parent"
+   						  android:layout_height="fill_parent">
+				    <Button android:id="@+id/trailer"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="@drawable/play"
+						android:layout_centerInParent="true"
+					/>
+			</RelativeLayout>
+			
+		</FrameLayout>
+		
+	</LinearLayout>
+    
+
+</TabHost>
