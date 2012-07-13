@@ -36,6 +36,15 @@ public class MainGladiator extends Activity implements SensorEventListener{
 	private CountDownTimer trigger = null;
 	private boolean up;
 	private boolean down;
+	private static MainGladiator instance;
+	private boolean paused = false;
+	private static AnswersReceiver answersReceiver;
+	private boolean already = true;
+
+
+	public static MainGladiator getInstance() {
+        return instance;
+	}
 	
 	@Override
 	public void onCreate( Bundle savedInstanceState ){
@@ -44,6 +53,7 @@ public class MainGladiator extends Activity implements SensorEventListener{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.maingladiator);
+		instance = this;
         
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -52,6 +62,7 @@ public class MainGladiator extends Activity implements SensorEventListener{
 		
 		left = (TextView)findViewById( R.id.left);
 		right = (TextView)findViewById( R.id.right);
+		centro = (TextView)findViewById( R.id.centro);
 		Typeface font = Typeface.createFromAsset(getAssets(), "Imperator.ttf");  
         left.setTypeface(font);
         right.setTypeface(font);
@@ -60,11 +71,16 @@ public class MainGladiator extends Activity implements SensorEventListener{
         extras.setOnClickListener( extra );      
         
         
-        left.setText( "Waiting for options." );
-        right.setText("Waiting for options.");       
+        left.setText( "?" );
+        centro.setText( "Waiting for options." );
+        right.setText("?");       
         
         mainLayout = findViewById(R.id.maingladiator);
-        
+        if (answersReceiver == null) {
+            answersReceiver = new AnswersReceiver();
+            answersReceiver.execute();
+        }
+
     }
 	
 	private View.OnClickListener extra = new View.OnClickListener() {
@@ -82,13 +98,17 @@ public class MainGladiator extends Activity implements SensorEventListener{
 	@Override
 	public void onPause(){
 		super.onPause();
+		paused = true;
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
+		paused = false;
 	}
 	
+	
+
 	
 	@Override
 	public void onSensorChanged(SensorEvent event) {
@@ -106,41 +126,27 @@ public class MainGladiator extends Activity implements SensorEventListener{
 					mainLayout.setBackgroundResource(R.drawable.arenagreenback); 
 					down = false;
 					up = true;
-					new CountDownTimer(1200, 100) {
-					     public void onTick(long millisUntilFinished) {
-						     if( up ){
-					    	 	 if( millisUntilFinished >= 1200)
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback01);
-						    	 else if( millisUntilFinished > 1100 && millisUntilFinished < 1200 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback015);
-						    	 else if( millisUntilFinished > 1000 && millisUntilFinished < 1100 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback02);
-						    	 else if( millisUntilFinished > 900 && millisUntilFinished < 1000 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback025);
-						    	 else if( millisUntilFinished > 800 && millisUntilFinished < 900 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback03);
-						    	 else if( millisUntilFinished > 700 && millisUntilFinished < 800 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback035);
-						    	 else if( millisUntilFinished > 600 && millisUntilFinished < 700 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback04);
-						    	 else if( millisUntilFinished > 500 && millisUntilFinished < 600 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback045);
-						    	 else if( millisUntilFinished > 400 && millisUntilFinished < 500 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback05);
-						    	 else if( millisUntilFinished > 300 && millisUntilFinished < 400 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback055);
-						    	 else if( millisUntilFinished > 200 && millisUntilFinished < 300 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback06);
-						    	 else if( millisUntilFinished > 100 && millisUntilFinished < 200 )
-						    		 mainLayout.setBackgroundResource(R.drawable.arenagreenback065);
-						    	 else
-						    		 mainLayout.setBackgroundColor(android.R.color.white);
-						     }
-						     else
-						    	 cancel();
+					answer = left.getText().toString();
+					new CountDownTimer(3000, 500) {
+					     public void onTick(long millisUntilFinished) {					     
+						     if(!up)
+						    	 cancel();						    	 
 					     }
 					     public void onFinish() {
-					    	 mainLayout.setBackgroundResource(R.drawable.arenaback);
+					    	 if(!up)
+					    		 cancel();
+					    	 else{
+					    		 mainLayout.setBackgroundResource(R.drawable.arenaback);
+					    		 if(!already){
+					    			 SendAnswer sendAnswer = new SendAnswer();
+					    			 sendAnswer.execute("answer#"+answer);
+						             left.setText("?");
+						             right.setText("?");
+						             centro.setText("Waiting for new options" );
+						             setAlready( true );
+					    		 }
+					             
+					    	 }					    	 
 					     }
 					}.start();
 				}
@@ -149,8 +155,29 @@ public class MainGladiator extends Activity implements SensorEventListener{
 				if( !down ){
 					mainLayout.setBackgroundResource(R.drawable.arenaredback); 
 					down = true;
-					up = false;				
-					
+					up = false;		
+					answer = right.getText().toString();
+					new CountDownTimer(3000, 500) {
+					     public void onTick(long millisUntilFinished) {					     
+						     if(!down)
+						    	 cancel();						    	 
+					     }
+					     public void onFinish() {
+					    	 if(!down)
+					    		 cancel();
+					    	 else{
+					    		 mainLayout.setBackgroundResource(R.drawable.arenaback);
+					    		 if(!already){
+					    			SendAnswer sendAnswer = new SendAnswer();
+					             	sendAnswer.execute("answer#"+answer);
+					             	left.setText("?");
+					             	right.setText("?");
+					             	centro.setText("Waiting for new options" );
+					             	setAlready( true );
+					    		 }
+					    	 }					    	 
+					     }
+					}.start();					
 				}
 			} 
 			else {
@@ -161,5 +188,20 @@ public class MainGladiator extends Activity implements SensorEventListener{
 		}
 	
 	}
+	public TextView getLeft(){
+    	return left;
+    }
+    public TextView getRight(){
+    	return right;
+    }
+    public TextView getCentro(){
+    	return centro;
+    }
+    public boolean isPaused() {
+        return paused;
+    }
+    public void setAlready( boolean x ){
+    	already = x;
+    }
 
 }
