@@ -1,0 +1,1 @@
+Binary decisor for video stream.
